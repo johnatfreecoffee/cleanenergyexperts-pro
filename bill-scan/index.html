@@ -161,7 +161,8 @@ body{font-family:'Inter',sans-serif;background:#f8fafb;color:#1a1a2e;min-height:
 <!-- <script>!function(f,b,e,v,n,t,s){...}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','PIXEL_ID');fbq('track','PageView');</script> -->
 
 <script>
-const OR_KEY='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';
+// API keys are now server-side via Cloudflare Pages Functions
+const BILL_API_URL='/api/analyze-bill';
 const BILL_MODEL='google/gemini-3.1-pro-preview';
 const SB_URL='https://sxjtpprtaascxafddddg.supabase.co';
 const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN4anRwcHJ0YWFzY3hhZmRkZGRnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzExMDI1MjAsImV4cCI6MjA4NjY3ODUyMH0.sdIuHEAlahUjnZjRTB2E0haF0MkDF67NL34uKQWyERY';
@@ -283,9 +284,9 @@ BILL:
 
 async function analyzeWithAI(text, setupType) {
   const prompt = buildPrompt(setupType);
-  const r = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+  const r = await fetch(BILL_API_URL, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + OR_KEY },
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ model: BILL_MODEL, temperature: 0.15, messages: [{ role: 'user', content: prompt + text }] })
   });
   const d = await r.json();

@@ -333,7 +333,8 @@ document.querySelectorAll('.nav-item:not(.disabled)').forEach(item => {
 });
 
 // ===== Bill Analyzer =====
-const GEMINI_KEY = 'AIzaSyCwO5f6KyLLYp278G4gozMbyvJYF_2maKw';
+// API key is now server-side via Cloudflare Pages Functions
+const GEMINI_API_URL = '/api/analyze-bill-gemini';
 pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
 const uploadZone = document.getElementById('uploadZone');
@@ -423,7 +424,7 @@ Return ONLY valid JSON, no markdown, no explanation:
 BILL TEXT:
 ${billText}`;
 
-  const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:generateContent?key=${GEMINI_KEY}`, {
+  const res = await fetch(GEMINI_API_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
