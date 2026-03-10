@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0f172a">
+<title>Energy Analysis — Clean Energy Experts</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:#0f172a;color:#e2e8f0;min-height:100vh;-webkit-font-smoothing:antialiased}
+.app{max-width:600px;margin:0 auto;padding:20px}
+.header{text-align:center;padding:24px 0 20px;border-bottom:1px solid #1e293b;margin-bottom:24px}
+.header h1{font-size:1.3rem;font-weight:800;letter-spacing:-0.02em}
+.header h1 .energy{color:#fff}
+.header h1 .analysis{color:#f59e0b}
+.header p{font-size:0.82rem;color:#64748b;margin-top:4px}
+.loading{text-align:center;padding:48px}
+.loading .spinner{width:40px;height:40px;border:3px solid #334155;border-top-color:#f59e0b;border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 16px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading p{color:#94a3b8;font-size:0.9rem}
+.error{text-align:center;padding:48px;color:#f87171;font-weight:600}
+
+/* Card styles — same as index.html */
+.card{border-radius:12px;overflow:hidden;margin-bottom:12px;border:1px solid #1e293b;background:#151921}
+.card-head{display:flex;align-items:center;gap:8px;padding:10px 16px;font-size:0.82rem;font-weight:700;background:rgba(255,255,255,0.02);border-bottom:1px solid #1e293b}
+.card-body{padding:16px}
+.card-green{border-color:rgba(52,211,153,0.3)}
+.card-green .card-head{background:rgba(52,211,153,0.04);border-bottom-color:rgba(52,211,153,0.15);color:#34d399}
+.row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid #1e293b;font-size:0.82rem}
+.row:last-child{border-bottom:none}
+.row .k{color:#94a3b8}
+.row .v{font-weight:600;text-align:right}
+.math-box{background:#0d0f13;border-radius:10px;padding:14px;margin:8px 0}
+.math-row{display:flex;justify-content:space-between;font-size:0.82rem;padding:4px 0}
+.math-row .k{color:#94a3b8}
+.math-row .v{color:#fff;font-weight:500}
+.math-divider{border-top:1px solid #1e293b;margin-top:6px;padding-top:6px}
+.math-total .v{font-weight:700}
+.division{display:flex;align-items:center;justify-content:center;gap:16px;text-align:center;padding:12px;background:#0d0f13;border-radius:10px;margin:8px 0}
+.division .part{line-height:1.3}
+.division .part .num{font-size:1.1rem;font-weight:700;color:#fff}
+.division .part .lbl{font-size:0.6rem;color:#6b7280}
+.division .op{font-size:1.2rem;color:#4b5563}
+.division .result .num{color:#f87171}
+.progress-track{height:8px;background:#0d0f13;border-radius:4px;overflow:hidden;margin:6px 0}
+.progress-fill{height:100%;border-radius:4px;transition:width 0.7s}
+.progress-labels{display:flex;justify-content:space-between;font-size:0.65rem;color:#6b7280;margin-top:3px}
+.benefit-grid{display:grid;grid-template-columns:1fr;gap:8px}
+.benefit-item{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid #1e293b}
+.benefit-item:last-child{border-bottom:none}
+.benefit-icon{width:28px;height:28px;border-radius:8px;background:rgba(52,211,153,0.1);display:flex;align-items:center;justify-content:center;font-size:0.9rem;flex-shrink:0;margin-top:2px}
+.benefit-title{font-size:0.82rem;font-weight:600;color:#fff}
+.benefit-desc{font-size:0.72rem;color:#94a3b8;margin-top:1px;line-height:1.4}
+.cust-bar{display:flex;gap:10px;flex-wrap:wrap;font-size:0.78rem;color:#94a3b8;padding:10px 14px;background:#151921;border-radius:10px;border:1px solid #1e293b;margin-bottom:12px}
+.cust-bar .name{color:#fff;font-weight:600}
+.cta{text-align:center;background:#1e293b;border:1px solid #2d3a4d;border-radius:12px;padding:20px;margin:12px 0}
+.cta h3{font-size:1rem;font-weight:700;margin-bottom:4px}
+.cta p{font-size:0.82rem;color:#64748b;margin-bottom:10px}
+.cta a{display:inline-block;background:#22c55e;color:#fff;padding:10px 24px;border-radius:8px;font-weight:700;font-size:0.9rem;text-decoration:none}
+.timestamp{text-align:center;font-size:0.7rem;color:#4b5563;margin-top:8px}
+@media(max-width:480px){.division{gap:10px}.division .part .num{font-size:0.95rem}}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="header">
+    <h1>⚡ <span class="energy">Energy</span> <span class="analysis">Analysis</span></h1>
+    <p>Powered by Clean Energy Experts</p>
+  </div>
+  <div id="loading" class="loading"><div class="spinner"></div><p>Loading analysis...</p></div>
+  <div id="error" class="error" style="display:none"></div>
+  <div id="results" style="display:none"></div>
+</div>
+<script>
+const SB_URL='https://sxjtpprtaascxafddddg.supabase.co';
+const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN4anRwcHJ0YWFzY3hhZmRkZGRnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzExMDI1MjAsImV4cCI6MjA4NjY3ODUyMH0.sdIuHEAlahUjnZjRTB2E0haF0MkDF67NL34uKQWyERY';
+const id=new URLSearchParams(location.search).get('id');
+
+if(!id){show('error','No analysis ID provided.');}
+else{loadAnalysis();}
+
+function show(el,msg){document.getElementById('loading').style.display='none';const e=document.getElementById(el);e.style.display='block';if(msg)e.textContent=msg;}
+
+let _utilityCompany = 'Your utility';
+const iconMap = { store: '🔋', protect: '🛡️', save: '📉', independence: '⚡' };
+
+async function loadAnalysis(){
+  try{
+    const r=await fetch(`${SB_URL}/rest/v1/bill_analyses?id=eq.${id}&select=*`,{headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY}});
+    const rows=await r.json();
+    if(!rows.length)throw new Error('Analysis not found');
+    const row=rows[0];
+    const d=row.raw_json;
+    document.getElementById('loading').style.display='none';
+    document.getElementById('results').style.display='block';
+
+    // Support both new card format and legacy flat format
+    if(d.cards && Array.isArray(d.cards)){
+      renderCards(d.cards, row.created_at);
+    } else {
+      renderLegacy(d, row.created_at);
+    }
+  }catch(e){
+    show('error', e.message||'Failed to load analysis');
+  }
+}
+
+// ════════════════════════════════════════
+// NEW CARD-BASED RENDERER
+// ════════════════════════════════════════
+
+function renderCards(cards, createdAt){
+  const el=document.getElementById('results');
+  const headerCard = cards.find(c => c.type === 'customer_header');
+  _utilityCompany = headerCard?.utility_company || 'Your utility';
+
+  let html = '';
+  cards.forEach(card => {
+    const fn = cardRenderers[card.type];
+    if(fn) html += fn(card);
+  });
+
+  const date = createdAt ? new Date(createdAt).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) : '';
+  html += `<div class="cta"><h3>Ready to take control of your energy?</h3><p>See if your home qualifies for a battery program.</p><a href="/">Learn More →</a></div>`;
+  if(date) html += `<div class="timestamp">Analysis from ${date}</div>`;
+  el.innerHTML = html;
+}
+
+const cardRenderers = {
+  customer_header(c) {
+    return `<div class="cust-bar"><span class="name">👤 ${c.customer_name}</span><span>📍 ${c.service_address}</span>${c.utility_company ? `<span>🏢 ${c.utility_company}</span>` : ''}${c.rate_plan ? `<span>📋 ${c.rate_plan}</span>` : ''}<span>${c.has_solar ? '☀️ Solar' : '❌ No Solar'}</span></div>`;
+  },
+
+  real_rate(c) {
+    const rate = String(c.effective_rate).replace(/^\$/, '');
+    return `<div class="card"><div class="card-head" style="color:#f59e0b">⚡ Your Current Rate</div><div class="card-body">
+      <div style="text-align:center;padding:4px 0 12px">
+        <div style="font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#6b7280;margin-bottom:4px">${_utilityCompany} is charging you</div>
+        <div style="font-size:2.2rem;font-weight:900;color:#f87171">$${rate}<small style="font-size:0.7rem;font-weight:500;color:#6b7280">/kWh</small></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;text-align:center">
+        <div style="background:#0d0f13;border-radius:8px;padding:10px"><div style="font-size:0.6rem;color:#6b7280;font-weight:700;text-transform:uppercase">From Grid</div><div style="font-size:1.2rem;font-weight:700;color:#fff">${c.consumption_kwh}<small style="font-size:0.65rem;color:#6b7280"> kWh</small></div></div>
+        <div style="background:#0d0f13;border-radius:8px;padding:10px"><div style="font-size:0.6rem;color:#6b7280;font-weight:700;text-transform:uppercase">Grid Dependency</div><div style="font-size:1.2rem;font-weight:700;color:#f59e0b">${c.grid_dependency}%</div></div>
+      </div>
+    </div></div>`;
+  },
+
+  rate_explainer(c) {
+    const rate = String(c.effective_rate).replace(/^\$/, '');
+    let chargeHtml = '';
+    if (c.charge_lines) {
+      chargeHtml = `<div class="math-box">${c.charge_lines.map(l => `<div class="math-row"><span class="k">${l.label}</span><span class="v">${l.amount}</span></div>`).join('')}<div class="math-row math-divider math-total"><span class="k" style="color:#fff;font-weight:700">Total energy charges</span><span class="v" style="font-weight:700">${c.total_charges}</span></div></div>`;
+    }
+    return `<div class="card"><div class="card-head" style="color:#67e8f9">❓ ${c.headline || 'Where Does Your Rate Come From?'}</div><div class="card-body">
+      <p style="font-size:0.82rem;color:#94a3b8;line-height:1.6;margin-bottom:8px">${c.explainer_text}</p>
+      ${chargeHtml}
+      <div class="division">
+        <div class="part"><div class="num">${c.total_charges}</div><div class="lbl">total charges</div></div>
+        <div class="op">÷</div>
+        <div class="part"><div class="num">${c.total_kwh} kWh</div><div class="lbl">electricity used</div></div>
+        <div class="op">=</div>
+        <div class="part result"><div class="num">$${rate}/kWh</div><div class="lbl">your real rate</div></div>
+      </div>
+      ${c.bottom_note ? `<p style="font-size:0.7rem;color:#6b7280;line-height:1.5;margin-top:4px">${c.bottom_note}</p>` : ''}
+    </div></div>`;
+  },
+
+  true_up(c) {
+    const ytdClean = String(c.ytd_charges).replace(/^\$/, '').replace(/,/g, '');
+    const ytd = parseFloat(ytdClean);
+    const pct = Math.min((c.billing_month / 12) * 100, 100);
+    const color = ytd > 1500 ? '#ef4444' : ytd > 800 ? '#f59e0b' : '#22c55e';
+    return `<div class="card"><div class="card-head" style="color:#f59e0b">📊 True-Up Tracker</div><div class="card-body">
+      <div style="text-align:center;padding:4px 0 8px">
+        <div style="font-size:2rem;font-weight:900;color:${color}">$${ytdClean}</div>
+        <div style="font-size:0.7rem;color:#6b7280;margin-top:2px">year-to-date charges · month ${c.billing_month} of 12</div>
+      </div>
+      <div class="progress-track"><div class="progress-fill" style="width:${pct}%;background:${color}"></div></div>
+      <div class="progress-labels"><span>Billing start</span><span>${c.true_up_date || 'Settlement'}</span></div>
+      ${c.credit_balance ? `<div class="row" style="margin-top:8px"><span class="k">Account credit</span><span class="v" style="color:#4ade80">$${String(c.credit_balance).replace(/^\$/,'').replace(/^-/,'')}</span></div>` : ''}
+      ${c.explainer ? `<p style="font-size:0.72rem;color:#6b7280;line-height:1.5;margin-top:8px">${c.explainer}</p>` : ''}
+    </div></div>`;
+  },
+
+  energy_export(c) {
+    return `<div class="card" style="border-color:rgba(250,204,21,0.2)"><div class="card-head" style="color:#facc15;background:rgba(250,204,21,0.04);border-bottom-color:rgba(250,204,21,0.15)">☀️ ${c.headline || 'Energy You\'re Losing'}</div><div class="card-body">
+      <div style="text-align:center;padding:4px 0 8px">
+        <div style="font-size:2rem;font-weight:900;color:#facc15">${c.exported_kwh}<small style="font-size:0.7rem;font-weight:500;color:#6b7280"> kWh</small></div>
+        <div style="font-size:0.7rem;color:#6b7280;margin-top:2px">sent back to the grid this month</div>
+      </div>
+      <p style="font-size:0.82rem;color:#94a3b8;line-height:1.6;text-align:center">${c.explainer_text}</p>
+    </div></div>`;
+  },
+
+  battery_benefits(c) {
+    const benefitsHtml = (c.benefits || []).map(b => `
+      <div class="benefit-item">
+        <div class="benefit-icon">${iconMap[b.icon] || '⚡'}</div>
+        <div><div class="benefit-title">${b.title}</div><div class="benefit-desc">${b.description}</div></div>
+      </div>
+    `).join('');
+    return `<div class="card card-green"><div class="card-head">🔋 ${c.headline || 'What Batteries Change'}</div><div class="card-body"><div class="benefit-grid">${benefitsHtml}</div></div></div>`;
+  },
+
+  info(c) {
+    return `<div class="card"><div class="card-head">${c.headline}</div><div class="card-body"><p style="font-size:0.82rem;color:#94a3b8;line-height:1.6">${c.body}</p></div></div>`;
+  }
+};
+
+// ════════════════════════════════════════
+// LEGACY FLAT FORMAT (old analyses)
+// ════════════════════════════════════════
+
+function renderLegacy(d, createdAt){
+  const el=document.getElementById('results');
+  const util = d.utility || 'Your utility';
+  const rate = d.avg_import_rate ? d.avg_import_rate.toFixed(2) : '0.00';
+  const ytd = d.ytd_charges ? d.ytd_charges.toFixed(2) : '0.00';
+  const pct = Math.min(((d.billing_month||0)/12)*100,100);
+  const date = createdAt ? new Date(createdAt).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) : '';
+
+  el.innerHTML=`
+    <div class="cust-bar"><span class="name">👤 ${d.customer_name||'Customer'}</span><span>📍 ${d.service_address||''}</span><span>${d.has_solar?'☀️ Solar':'❌ No Solar'}</span></div>
+    <div class="card"><div class="card-head" style="color:#f59e0b">⚡ Your Current Rate</div><div class="card-body">
+      <div style="text-align:center;padding:4px 0 12px">
+        <div style="font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#6b7280;margin-bottom:4px">${util} is charging you</div>
+        <div style="font-size:2.2rem;font-weight:900;color:#f87171">$${rate}<small style="font-size:0.7rem;font-weight:500;color:#6b7280">/kWh</small></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;text-align:center">
+        <div style="background:#0d0f13;border-radius:8px;padding:10px"><div style="font-size:0.6rem;color:#6b7280;font-weight:700;text-transform:uppercase">From Grid</div><div style="font-size:1.2rem;font-weight:700;color:#fff">${d.total_consumption_kwh||0}<small style="font-size:0.65rem;color:#6b7280"> kWh</small></div></div>
+        <div style="background:#0d0f13;border-radius:8px;padding:10px"><div style="font-size:0.6rem;color:#6b7280;font-weight:700;text-transform:uppercase">Grid Dependency</div><div style="font-size:1.2rem;font-weight:700;color:#f59e0b">${d.grid_dependency_pct||0}%</div></div>
+      </div>
+    </div></div>
+    ${d.ytd_charges?`<div class="card"><div class="card-head" style="color:#f59e0b">📊 True-Up Tracker</div><div class="card-body">
+      <div style="text-align:center;padding:4px 0 8px">
+        <div style="font-size:2rem;font-weight:900;color:#f59e0b">$${ytd}</div>
+        <div style="font-size:0.7rem;color:#6b7280;margin-top:2px">year-to-date charges · month ${d.billing_month||'?'} of 12</div>
+      </div>
+      <div class="progress-track"><div class="progress-fill" style="width:${pct}%;background:#f59e0b"></div></div>
+      <div class="progress-labels"><span>Billing start</span><span>${d.true_up_date||'Settlement'}</span></div>
+    </div></div>`:''}
+    <div class="cta"><h3>Ready to take control of your energy?</h3><p>See if your home qualifies for a battery program.</p><a href="/">Learn More →</a></div>
+    ${date?`<div class="timestamp">Analysis from ${date}</div>`:''}`;
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact — Clean Energy Experts</title>
+  <meta name="description" content="Get in touch with Clean Energy Experts. We help Edison customers across Southern California access free battery programs.">
+  <meta property="og:title" content="Contact — Clean Energy Experts">
+  <meta property="og:description" content="Get in touch with our team. Serving all of Southern California Edison's territory.">
+  <meta property="og:image" content="https://cleanenergyexperts.pro/images/og-image.jpg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <meta name="theme-color" content="#2563eb">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a href="/" class="logo">
+        <img src="/images/logo-icon.png" alt="Clean Energy Experts" class="logo-img"> Clean Energy Experts
+      </a>
+      <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="/bill-scan/">Energy Analysis</a>
+        <a href="/about.html">About</a>
+        <a href="/contact.html" class="active">Contact</a>
+      </div>
+      <a href="/#check" class="nav-cta">Check Eligibility</a>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+    </div>
+  </nav>
+
+  <section class="page-hero">
+    <div class="container">
+      <h1>Get in Touch</h1>
+      <p>Have a question about the battery program or want to check your eligibility? We'd love to hear from you.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="contact-grid">
+        <div class="contact-info">
+          <h2 style="font-size:1.5rem;font-weight:800;margin-bottom:24px">We're Here to Help</h2>
+          <div class="contact-item">
+            <div class="contact-icon">📞</div>
+            <div>
+              <h3>Phone</h3>
+              <p><a href="tel:+15044608131" style="color:#2563eb;font-weight:600">(504) 460-8131</a></p>
+              <p style="font-size:0.82rem;color:#64748b">Mon–Sat, 8am–6pm PST</p>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">✉️</div>
+            <div>
+              <h3>Email</h3>
+              <p><a href="mailto:hello@cleanenergyexperts.pro" style="color:#2563eb;font-weight:600">hello@cleanenergyexperts.pro</a></p>
+              <p style="font-size:0.82rem;color:#64748b">We respond within 24 hours</p>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">📍</div>
+            <div>
+              <h3>Service Area</h3>
+              <p>All of Southern California Edison territory</p>
+              <p style="font-size:0.82rem;color:#64748b">Inland Empire, Orange County, LA County, Ventura, High Desert, Central Coast & more</p>
+            </div>
+          </div>
+          <div style="margin-top:32px">
+            <img src="/images/team.jpg" alt="Our team" style="border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,0.1)">
+          </div>
+        </div>
+        <div class="contact-form-wrap">
+          <h2 style="font-size:1.3rem;font-weight:700;margin-bottom:8px">Send Us a Message</h2>
+          <p style="color:#64748b;font-size:0.92rem;margin-bottom:24px">Fill out the form below and we'll get back to you within 24 hours.</p>
+          <form class="contact-form" action="https://formspree.io/f/placeholder" method="POST">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="c_first">First Name</label>
+                <input type="text" id="c_first" name="first_name" required placeholder="John">
+              </div>
+              <div class="form-group">
+                <label for="c_last">Last Name</label>
+                <input type="text" id="c_last" name="last_name" required placeholder="Smith">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="c_email">Email</label>
+              <input type="email" id="c_email" name="email" required placeholder="john@example.com">
+            </div>
+            <div class="form-group">
+              <label for="c_phone">Phone (optional)</label>
+              <input type="tel" id="c_phone" name="phone" placeholder="(951) 555-0123">
+            </div>
+            <div class="form-group">
+              <label for="c_subject">Subject</label>
+              <select id="c_subject" name="subject">
+                <option value="eligibility">Check My Eligibility</option>
+                <option value="question">General Question</option>
+                <option value="bill-help">Help With My Bill</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="c_message">Message</label>
+              <textarea id="c_message" name="message" rows="5" placeholder="Tell us how we can help..." style="width:100%;padding:13px 16px;border-radius:10px;border:1.5px solid #d1d5db;background:#fff;color:#1a1a2e;font-size:0.95rem;font-family:inherit;resize:vertical"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary btn-lg btn-full">Send Message →</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <img src="/images/logo-icon.png" alt="Clean Energy Experts" class="footer-logo-img"> Clean Energy Experts
+        <p>Helping Southern California homeowners access clean energy programs.</p>
+      </div>
+      <div class="footer-nav">
+        <div class="footer-col">
+          <h4>Pages</h4>
+          <a href="/">Home</a>
+          <a href="/bill-scan/">Energy Analysis</a>
+          <a href="/about.html">About Us</a>
+          <a href="/contact.html">Contact</a>
+        </div>
+        <div class="footer-col">
+          <h4>Legal</h4>
+          <a href="/privacy">Privacy Policy</a>
+          <a href="/terms">Terms of Service</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-copy">&copy; 2026 Clean Energy Experts. All rights reserved.</div>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
