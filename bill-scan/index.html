@@ -117,6 +117,15 @@ body{font-family:'Inter',sans-serif;background:#f8fafb;color:#1a1a2e;min-height:
 
 /* Meta pixel placeholder */
 .pixel-ready{}
+
+/* Personalized greeting banner */
+.lead-greeting{display:none;background:linear-gradient(135deg,#eff6ff,#f0fdf4);border:1px solid #bfdbfe;border-radius:14px;padding:20px;margin-bottom:20px;text-align:center;animation:fadeSlide 0.4s ease}
+.lead-greeting.visible{display:block}
+.lead-greeting h2{font-size:1.15rem;font-weight:800;color:#1e40af;margin-bottom:4px}
+.lead-greeting p{font-size:0.82rem;color:#475569;line-height:1.5}
+.lead-greeting .lead-info{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:10px;font-size:0.75rem;color:#64748b}
+.lead-greeting .lead-info span{background:#fff;border:1px solid #e2e8f0;border-radius:6px;padding:4px 10px}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
 </style>
 </head>
 <body>
@@ -134,6 +143,12 @@ body{font-family:'Inter',sans-serif;background:#f8fafb;color:#1a1a2e;min-height:
   <div class="header">
     <h1>⚡ <span class="energy">Energy</span> <span>Analysis</span></h1>
     <p>Upload your power bill and see what the utility company really charges you</p>
+  </div>
+
+  <div class="lead-greeting" id="leadGreeting">
+    <h2 id="greetName">👋 Hi there!</h2>
+    <p>We pulled up your info from the battery program sign-up.<br>Just upload your bill below and we'll show you the full breakdown.</p>
+    <div class="lead-info" id="leadInfoBar"></div>
   </div>
 
   <div class="setup-section" id="setupSection">
@@ -183,12 +198,64 @@ const loading = document.getElementById('loading');
 const results = document.getElementById('results');
 const setupSection = document.getElementById('setupSection');
 
-// Parse UTM and fbclid from URL
+// Parse UTM, fbclid, and ref token from URL
 const urlParams = new URLSearchParams(window.location.search);
 const utmSource = urlParams.get('utm_source');
 const utmMedium = urlParams.get('utm_medium');
 const utmCampaign = urlParams.get('utm_campaign');
 const fbclid = urlParams.get('fbclid');
+const refToken = urlParams.get('ref');
+
+// Lead data from ref token lookup
+let leadData = null;
+
+// Look up lead info if ref token present
+async function lookupLead(token) {
+  try {
+    // TODO: Replace with real endpoint once noknok.pro agent builds it
+    // Option A (PostgREST): const url = SB_URL + '/rest/v1/meta_leads?token=eq.' + token + '&select=token,first_name,last_name,email,phone,lead_id';
+    // Option B (Edge Function): const url = 'https://noknok.pro/api/lead-lookup?ref=' + token;
+    const url = 'https://sxjtpprtaascxafddddg.supabase.co/functions/v1/lead-lookup?ref=' + encodeURIComponent(token);
+    const r = await fetch(url);
+    if (!r.ok) return null;
+    const data = await r.json();
+    if (!data || !data.first_name) return null;
+    return data;
+  } catch(e) {
+    console.warn('Lead lookup failed:', e);
+    return null;
+  }
+}
+
+function showLeadGreeting(lead) {
+  const greeting = document.getElementById('leadGreeting');
+  const nameEl = document.getElementById('greetName');
+  const infoBar = document.getElementById('leadInfoBar');
+
+  nameEl.textContent = '👋 Hi ' + lead.first_name + '!';
+
+  const infoParts = [];
+  if (lead.first_name && lead.last_name) infoParts.push('👤 ' + lead.first_name + ' ' + lead.last_name);
+  if (lead.email) infoParts.push('✉️ ' + lead.email);
+  if (lead.phone) {
+    const p = lead.phone.replace(/\D/g, '');
+    const fmt = p.length === 10 ? '(' + p.slice(0,3) + ') ' + p.slice(3,6) + '-' + p.slice(6) :
+                p.length === 11 ? '(' + p.slice(1,4) + ') ' + p.slice(4,7) + '-' + p.slice(7) : lead.phone;
+    infoParts.push('📱 ' + fmt);
+  }
+  infoBar.innerHTML = infoParts.map(s => '<span>' + s + '</span>').join('');
+  greeting.classList.add('visible');
+}
+
+// Init: if ref token, look up lead before anything else
+if (refToken) {
+  lookupLead(refToken).then(lead => {
+    if (lead) {
+      leadData = lead;
+      showLeadGreeting(lead);
+    }
+  });
+}
 
 function selectSetup(el) {
   document.querySelectorAll('.setup-btn').forEach(b => b.classList.remove('active'));
@@ -280,6 +347,7 @@ CARD TYPES:
 
 RULES:
 - Return ONLY: { "cards": [...] }
+- Each card MUST have a "type" field (NOT "card_type") with the card type name
 - Always: customer_header, real_rate, rate_explainer
 - true_up if NEM/solar
 - energy_export only if solar with exports
@@ -301,17 +369,21 @@ async function analyzeWithAI(text, setupType) {
     body: JSON.stringify({ model: BILL_MODEL, temperature: 0.15, messages: [{ role: 'user', content: prompt + text }] })
   });
   const d = await r.json();
-  let raw = d.choices[0].message.content;
+  let raw = d.choices?.[0]?.message?.content;
+  if (!raw) throw new Error('AI returned empty response. Please try again.');
   raw = raw.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
-  return JSON.parse(raw).cards;
+  const parsed = JSON.parse(raw);
+  const cards = parsed.cards;
+  if (!cards || !cards.length) throw new Error('AI could not extract bill data. Make sure the PDF contains readable text (not a scanned image).');
+  return cards;
 }
 
 async function saveToDb(cards, pdfFile) {
   try {
-    const h = cards.find(c => c.type === 'customer_header');
-    const rt = cards.find(c => c.type === 'real_rate');
-    const tu = cards.find(c => c.type === 'true_up');
-    const ex = cards.find(c => c.type === 'energy_export');
+    const h = cards.find(c => (c.type || c.card_type) === 'customer_header');
+    const rt = cards.find(c => (c.type || c.card_type) === 'real_rate');
+    const tu = cards.find(c => (c.type || c.card_type) === 'true_up');
+    const ex = cards.find(c => (c.type || c.card_type) === 'energy_export');
     const street = (h?.service_address || '').split(',')[0].trim();
 
     // Generate record ID upfront so we can link the PDF
@@ -353,6 +425,8 @@ async function saveToDb(cards, pdfFile) {
       utm_medium: utmMedium,
       utm_campaign: utmCampaign,
       fbclid: fbclid,
+      ref_token: refToken || null,
+      lead_id: leadData?.lead_id || null,
       raw_json: { cards }
     };
 
@@ -378,11 +452,13 @@ function renderCards(cards, savedId) {
   results.innerHTML = '';
 
   // Extract utility company name for use in cards
-  const headerCard = cards.find(c => c.type === 'customer_header');
+  const headerCard = cards.find(c => (c.type || c.card_type) === 'customer_header');
   window._utilityCompany = headerCard?.utility_company || 'Your utility';
 
   cards.forEach(card => {
-    const fn = cardRenderers[card.type];
+    // Normalize: model may return "card_type" or "type"
+    const ctype = card.type || card.card_type;
+    const fn = cardRenderers[ctype];
     if (fn) results.innerHTML += fn(card);
   });
 
@@ -400,7 +476,9 @@ function renderCards(cards, savedId) {
 
 const cardRenderers = {
   customer_header(c) {
-    return `<div class="cust-bar"><span class="name">👤 ${c.customer_name}</span><span>📍 ${c.service_address}</span>${c.utility_company ? `<span>🏢 ${c.utility_company}</span>` : ''}${c.rate_plan ? `<span>📋 ${c.rate_plan}</span>` : ''}<span>${c.has_solar ? '☀️ Solar' : '❌ No Solar'}</span></div>`;
+    // Use lead name from ref lookup if available, fall back to bill-extracted name
+    const displayName = leadData ? (leadData.first_name + ' ' + leadData.last_name) : c.customer_name;
+    return `<div class="cust-bar"><span class="name">👤 ${displayName}</span><span>📍 ${c.service_address}</span>${c.utility_company ? `<span>🏢 ${c.utility_company}</span>` : ''}${c.rate_plan ? `<span>📋 ${c.rate_plan}</span>` : ''}<span>${c.has_solar ? '☀️ Solar' : '❌ No Solar'}</span></div>`;
   },
 
   real_rate(c) {
