@@ -182,12 +182,12 @@ async function loadAnalysis(){
 
 function renderCards(cards, createdAt){
   const el=document.getElementById('results');
-  const headerCard = cards.find(c => c.type === 'customer_header');
+  const headerCard = cards.find(c => (c.type || c.card_type) === 'customer_header');
   _utilityCompany = headerCard?.utility_company || 'Your utility';
 
   let html = '';
   cards.forEach(card => {
-    const fn = cardRenderers[card.type];
+    const fn = cardRenderers[card.type || card.card_type];
     if(fn) html += fn(card);
   });
 
