@@ -16,6 +16,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/css/style.css">
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDwksWw2lb3dirsB1OTfWHAj2CSMISMwQY&libraries=places"></script>
   <style>
     .quote-hero {
       min-height: 100vh;
@@ -291,7 +292,7 @@
         </div>
 
         <div class="map-result" id="map-result">
-          <iframe id="map-frame" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          <div id="map-frame" style="width:100%;height:220px;"></div>
           <div class="map-confirm">
             <div class="check-icon">✓</div>
             <div class="map-address" id="map-address-text"></div>
@@ -325,7 +326,7 @@
         </div>
 
         <div class="map-result visible" id="map-result-2">
-          <iframe id="map-frame-2" loading="lazy" referrerpolicy="no-referrer-when-downgrade" style="height:160px"></iframe>
+          <div id="map-frame-2" style="width:100%;height:160px;"></div>
           <div class="map-confirm">
             <div class="check-icon">✓</div>
             <div class="map-address" id="map-address-2"></div>
@@ -362,51 +363,51 @@
     const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN4anRwcHJ0YWFzY3hhZmRkZGRnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzExMDI1MjAsImV4cCI6MjA4NjY3ODUyMH0.sdIuHEAlahUjnZjRTB2E0haF0MkDF67NL34uKQWyERY';
 
     let selectedAddress = '';
-    let debounceTimer = null;
+    let selectedLat = null;
+    let selectedLng = null;
+    let map1 = null;
+    let map2 = null;
+    let marker1 = null;
 
-    // --- Address autocomplete via Nominatim (free, no API key) ---
+    // --- Google Places Autocomplete ---
     const addressInput = document.getElementById('address');
-    const acList = document.getElementById('autocomplete-list');
+    const autocomplete = new google.maps.places.Autocomplete(addressInput, {
+      types: ['address'],
+      componentRestrictions: { country: 'us' }
+    });
 
-    addressInput.addEventListener('input', function() {
-      clearTimeout(debounceTimer);
-      const q = this.value.trim();
-      if (q.length < 4) { acList.classList.remove('visible'); return; }
+    // Hide our custom dropdown (Google provides its own)
+    document.getElementById('autocomplete-list').style.display = 'none';
+
+    autocomplete.addListener('place_changed', function() {
+      const place = autocomplete.getPlace();
+      if (!place.geometry) return;
       
-      debounceTimer = setTimeout(async () => {
-        try {
-          const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&countrycodes=us&limit=5&q=${encodeURIComponent(q)}`, {
-            headers: { 'User-Agent': 'CleanEnergyExperts/1.0' }
-          });
-          const data = await res.json();
-          if (data.length === 0) { acList.classList.remove('visible'); return; }
-          
-          acList.innerHTML = data.map(d => 
-            `<div class="autocomplete-item" data-lat="${d.lat}" data-lon="${d.lon}" data-name="${d.display_name}">${d.display_name}</div>`
-          ).join('');
-          acList.classList.add('visible');
-          
-          acList.querySelectorAll('.autocomplete-item').forEach(item => {
-            item.addEventListener('click', () => {
-              addressInput.value = item.dataset.name;
-              selectedAddress = item.dataset.name;
-              acList.classList.remove('visible');
-              showMap(item.dataset.lat, item.dataset.lon, item.dataset.name);
-            });
-          });
-        } catch(e) { console.error(e); }
-      }, 350);
+      selectedAddress = place.formatted_address;
+      selectedLat = place.geometry.location.lat();
+      selectedLng = place.geometry.location.lng();
+      
+      showMap(selectedLat, selectedLng, selectedAddress);
     });
 
-    // Close autocomplete on outside click
-    document.addEventListener('click', (e) => {
-      if (!e.target.closest('.autocomplete-wrap')) acList.classList.remove('visible');
-    });
-
-    function showMap(lat, lon, address) {
+    function showMap(lat, lng, address) {
       const mapResult = document.getElementById('map-result');
-      const iframe = document.getElementById('map-frame');
-      iframe.src = `https://www.openstreetmap.org/export/embed.html?bbox=${lon-0.003},${lat-0.002},${Number(lon)+0.003},${Number(lat)+0.002}&layer=mapnik&marker=${lat},${lon}`;
+      const pos = { lat: lat, lng: lng };
+      
+      if (!map1) {
+        map1 = new google.maps.Map(document.getElementById('map-frame'), {
+          center: pos,
+          zoom: 19,
+          mapTypeId: 'satellite',
+          disableDefaultUI: true,
+          zoomControl: true
+        });
+        marker1 = new google.maps.Marker({ position: pos, map: map1 });
+      } else {
+        map1.setCenter(pos);
+        marker1.setPosition(pos);
+      }
+      
       document.getElementById('map-address-text').textContent = address;
       mapResult.classList.add('visible');
     }
@@ -421,9 +422,17 @@
       document.getElementById('step-address').style.display = 'none';
       document.getElementById('step-phone').classList.add('visible');
       
-      // Copy map to phone step
-      const iframe2 = document.getElementById('map-frame-2');
-      iframe2.src = document.getElementById('map-frame').src;
+      // Create satellite map on step 2
+      if (selectedLat && selectedLng) {
+        const pos = { lat: selectedLat, lng: selectedLng };
+        map2 = new google.maps.Map(document.getElementById('map-frame-2'), {
+          center: pos,
+          zoom: 19,
+          mapTypeId: 'satellite',
+          disableDefaultUI: true
+        });
+        new google.maps.Marker({ position: pos, map: map2 });
+      }
       document.getElementById('map-address-2').textContent = selectedAddress;
 
       return false;
