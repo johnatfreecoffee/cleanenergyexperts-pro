@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Instant Solar Quote — Clean Energy Experts</title>
+  <meta name="description" content="See your home's solar and battery savings potential. Enter your address to get started.">
+  <meta property="og:title" content="Get Your Instant Solar Quote — Clean Energy Experts">
+  <meta property="og:description" content="See how much you could save with solar and battery storage.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <meta name="theme-color" content="#2563eb">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    .quote-hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #0f172a 100%);
+      padding: 100px 24px 60px;
+    }
+    .quote-card {
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.3);
+      max-width: 520px;
+      width: 100%;
+      overflow: hidden;
+    }
+    .quote-header {
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      padding: 32px 32px 28px;
+      text-align: center;
+    }
+    .quote-header h1 {
+      color: #fff;
+      font-size: 1.6rem;
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 8px;
+    }
+    .quote-header p {
+      color: rgba(255,255,255,0.85);
+      font-size: 0.95rem;
+    }
+    .quote-body {
+      padding: 32px;
+    }
+    .quote-step {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid #f1f5f9;
+    }
+    .quote-step:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+    .step-num {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #eff6ff;
+      color: #2563eb;
+      font-weight: 700;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .step-text { font-size: 0.9rem; color: #64748b; }
+    .step-text strong { color: #1a1a2e; }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+    .form-group label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #334155;
+      margin-bottom: 8px;
+    }
+    .form-group input {
+      width: 100%;
+      padding: 14px 16px;
+      border: 2px solid #e2e8f0;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-family: 'Inter', sans-serif;
+      color: #1a1a2e;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      outline: none;
+    }
+    .form-group input:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+    }
+    .form-group input::placeholder { color: #94a3b8; }
+
+    .quote-btn {
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      font-family: 'Inter', sans-serif;
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.15s;
+      letter-spacing: -0.01em;
+    }
+    .quote-btn:hover { transform: translateY(-1px); box-shadow: 0 8px 25px rgba(37,99,235,0.35); }
+    .quote-btn:active { transform: translateY(0); }
+    .quote-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+    .trust-bar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin-top: 20px;
+      font-size: 0.78rem;
+      color: #94a3b8;
+    }
+    .trust-bar span { display: flex; align-items: center; gap: 4px; }
+
+    /* Map result */
+    .map-result {
+      display: none;
+      margin-bottom: 24px;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 2px solid #e2e8f0;
+    }
+    .map-result.visible { display: block; }
+    .map-result iframe {
+      width: 100%;
+      height: 220px;
+      border: none;
+    }
+    .map-confirm {
+      padding: 16px;
+      background: #f0fdf4;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .map-confirm .check-icon {
+      width: 24px;
+      height: 24px;
+      background: #22c55e;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 0.8rem;
+      flex-shrink: 0;
+    }
+    .map-address {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #166534;
+    }
+
+    /* Success state */
+    .success-state {
+      display: none;
+      text-align: center;
+      padding: 40px 32px;
+    }
+    .success-state.visible { display: block; }
+    .success-icon {
+      width: 72px;
+      height: 72px;
+      background: linear-gradient(135deg, #22c55e, #16a34a);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      font-size: 2rem;
+      color: #fff;
+    }
+    .success-state h2 {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: #1a1a2e;
+      margin-bottom: 8px;
+    }
+    .success-state p {
+      color: #64748b;
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    /* Phone confirm screen */
+    .phone-confirm {
+      display: none;
+    }
+    .phone-confirm.visible { display: block; }
+
+    /* Loading spinner */
+    .spinner {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+      vertical-align: middle;
+      margin-right: 8px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Autocomplete dropdown */
+    .autocomplete-list {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: #fff;
+      border: 2px solid #e2e8f0;
+      border-top: none;
+      border-radius: 0 0 12px 12px;
+      max-height: 200px;
+      overflow-y: auto;
+      z-index: 10;
+      display: none;
+    }
+    .autocomplete-list.visible { display: block; }
+    .autocomplete-item {
+      padding: 12px 16px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      color: #334155;
+      border-bottom: 1px solid #f1f5f9;
+    }
+    .autocomplete-item:hover { background: #f8fafc; }
+    .autocomplete-item:last-child { border-bottom: none; }
+    .form-group.autocomplete-wrap { position: relative; }
+
+    @media (max-width: 540px) {
+      .quote-hero { padding: 80px 16px 40px; }
+      .quote-header { padding: 24px 20px 20px; }
+      .quote-header h1 { font-size: 1.35rem; }
+      .quote-body { padding: 24px 20px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Nav -->
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a href="/" class="logo">
+        <img src="/images/logo.png" alt="Clean Energy Experts" class="logo-img"> Clean Energy Experts
+      </a>
+      <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="/bill-scan/">Energy Analysis</a>
+        <a href="/about.html">About</a>
+        <a href="/contact.html">Contact</a>
+      </div>
+      <a href="#" class="nav-cta">Get Quote</a>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+    </div>
+  </nav>
+
+  <section class="quote-hero">
+    <div class="quote-card">
+      <div class="quote-header">
+        <h1>See Your Home's Savings Potential</h1>
+        <p>Enter your address to get a personalized energy estimate</p>
+      </div>
+
+      <!-- Step 1: Address -->
+      <div class="quote-body" id="step-address">
+        <div class="quote-step">
+          <div class="step-num">1</div>
+          <div class="step-text"><strong>Enter your home address</strong> — we'll pull up your property</div>
+        </div>
+
+        <div class="map-result" id="map-result">
+          <iframe id="map-frame" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          <div class="map-confirm">
+            <div class="check-icon">✓</div>
+            <div class="map-address" id="map-address-text"></div>
+          </div>
+        </div>
+
+        <form id="address-form" onsubmit="return handleAddressSubmit(event)">
+          <div class="form-group autocomplete-wrap">
+            <label for="address">Your Home Address</label>
+            <input type="text" id="address" name="address" placeholder="Start typing your address..." autocomplete="off" required>
+            <div class="autocomplete-list" id="autocomplete-list"></div>
+          </div>
+
+          <button type="submit" class="quote-btn" id="address-btn">
+            Find My Home
+          </button>
+        </form>
+
+        <div class="trust-bar">
+          <span>🔒 Secure</span>
+          <span>⚡ Instant Results</span>
+          <span>💰 100% Free</span>
+        </div>
+      </div>
+
+      <!-- Step 2: Phone confirm -->
+      <div class="quote-body phone-confirm" id="step-phone">
+        <div class="quote-step">
+          <div class="step-num">2</div>
+          <div class="step-text"><strong>Confirm your phone number</strong> — so we can match your quote</div>
+        </div>
+
+        <div class="map-result visible" id="map-result-2">
+          <iframe id="map-frame-2" loading="lazy" referrerpolicy="no-referrer-when-downgrade" style="height:160px"></iframe>
+          <div class="map-confirm">
+            <div class="check-icon">✓</div>
+            <div class="map-address" id="map-address-2"></div>
+          </div>
+        </div>
+
+        <form id="phone-form" onsubmit="return handlePhoneSubmit(event)">
+          <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" name="phone" placeholder="(555) 123-4567" required>
+          </div>
+
+          <button type="submit" class="quote-btn" id="phone-btn">
+            Get My Quote
+          </button>
+        </form>
+      </div>
+
+      <!-- Success -->
+      <div class="success-state" id="step-success">
+        <div class="success-icon">🏠</div>
+        <h2>We Found Your Home!</h2>
+        <p>A Clean Energy Expert will text you shortly with your personalized savings estimate. Keep an eye on your phone!</p>
+        <div style="margin-top:24px;padding:16px;background:#eff6ff;border-radius:12px;">
+          <div style="font-size:0.8rem;color:#64748b;margin-bottom:4px;">Your property</div>
+          <div style="font-weight:700;color:#1e293b;" id="success-address"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const SUPABASE_URL = 'https://sxjtpprtaascxafddddg.supabase.co';
+    const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN4anRwcHJ0YWFzY3hhZmRkZGRnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzExMDI1MjAsImV4cCI6MjA4NjY3ODUyMH0.sdIuHEAlahUjnZjRTB2E0haF0MkDF67NL34uKQWyERY';
+
+    let selectedAddress = '';
+    let debounceTimer = null;
+
+    // --- Address autocomplete via Nominatim (free, no API key) ---
+    const addressInput = document.getElementById('address');
+    const acList = document.getElementById('autocomplete-list');
+
+    addressInput.addEventListener('input', function() {
+      clearTimeout(debounceTimer);
+      const q = this.value.trim();
+      if (q.length < 4) { acList.classList.remove('visible'); return; }
+      
+      debounceTimer = setTimeout(async () => {
+        try {
+          const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&countrycodes=us&limit=5&q=${encodeURIComponent(q)}`, {
+            headers: { 'User-Agent': 'CleanEnergyExperts/1.0' }
+          });
+          const data = await res.json();
+          if (data.length === 0) { acList.classList.remove('visible'); return; }
+          
+          acList.innerHTML = data.map(d => 
+            `<div class="autocomplete-item" data-lat="${d.lat}" data-lon="${d.lon}" data-name="${d.display_name}">${d.display_name}</div>`
+          ).join('');
+          acList.classList.add('visible');
+          
+          acList.querySelectorAll('.autocomplete-item').forEach(item => {
+            item.addEventListener('click', () => {
+              addressInput.value = item.dataset.name;
+              selectedAddress = item.dataset.name;
+              acList.classList.remove('visible');
+              showMap(item.dataset.lat, item.dataset.lon, item.dataset.name);
+            });
+          });
+        } catch(e) { console.error(e); }
+      }, 350);
+    });
+
+    // Close autocomplete on outside click
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.autocomplete-wrap')) acList.classList.remove('visible');
+    });
+
+    function showMap(lat, lon, address) {
+      const mapResult = document.getElementById('map-result');
+      const iframe = document.getElementById('map-frame');
+      iframe.src = `https://www.openstreetmap.org/export/embed.html?bbox=${lon-0.003},${lat-0.002},${Number(lon)+0.003},${Number(lat)+0.002}&layer=mapnik&marker=${lat},${lon}`;
+      document.getElementById('map-address-text').textContent = address;
+      mapResult.classList.add('visible');
+    }
+
+    function handleAddressSubmit(e) {
+      e.preventDefault();
+      const addr = addressInput.value.trim();
+      if (!addr) return false;
+      if (!selectedAddress) selectedAddress = addr;
+
+      // Show phone step
+      document.getElementById('step-address').style.display = 'none';
+      document.getElementById('step-phone').classList.add('visible');
+      
+      // Copy map to phone step
+      const iframe2 = document.getElementById('map-frame-2');
+      iframe2.src = document.getElementById('map-frame').src;
+      document.getElementById('map-address-2').textContent = selectedAddress;
+
+      return false;
+    }
+
+    function formatPhone(input) {
+      let v = input.value.replace(/\D/g, '');
+      if (v.length > 10) v = v.slice(0, 10);
+      if (v.length >= 7) input.value = `(${v.slice(0,3)}) ${v.slice(3,6)}-${v.slice(6)}`;
+      else if (v.length >= 4) input.value = `(${v.slice(0,3)}) ${v.slice(3)}`;
+      else if (v.length > 0) input.value = `(${v}`;
+    }
+    document.getElementById('phone').addEventListener('input', function() { formatPhone(this); });
+
+    async function handlePhoneSubmit(e) {
+      e.preventDefault();
+      const phone = document.getElementById('phone').value.replace(/\D/g, '');
+      if (phone.length < 10) { alert('Please enter a valid phone number'); return false; }
+      
+      const btn = document.getElementById('phone-btn');
+      btn.disabled = true;
+      btn.innerHTML = '<span class="spinner"></span> Looking up your home...';
+
+      const phoneFormatted = '+1' + phone;
+
+      try {
+        // Try to match lead by phone number in Supabase
+        const searchPhone = phone.length === 11 && phone.startsWith('1') ? phone.slice(1) : phone;
+        
+        // Update lead with address if found
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/leads?or=(phone.eq.${searchPhone},phone.eq.1${searchPhone},phone.eq.+1${searchPhone},phone.eq.(${searchPhone.slice(0,3)})${searchPhone.slice(3,6)}-${searchPhone.slice(6)})&limit=1`, {
+          headers: {
+            'apikey': SUPABASE_ANON,
+            'Authorization': `Bearer ${SUPABASE_ANON}`
+          }
+        });
+        const leads = await res.json();
+        
+        if (leads.length > 0) {
+          // Found the lead — update with address
+          const lead = leads[0];
+          await fetch(`${SUPABASE_URL}/rest/v1/leads?id=eq.${lead.id}`, {
+            method: 'PATCH',
+            headers: {
+              'apikey': SUPABASE_ANON,
+              'Authorization': `Bearer ${SUPABASE_ANON}`,
+              'Content-Type': 'application/json',
+              'Prefer': 'return=minimal'
+            },
+            body: JSON.stringify({
+              street_address: selectedAddress,
+              quote_page_visited: true,
+              quote_page_visited_at: new Date().toISOString()
+            })
+          });
+        } else {
+          // No match — store as a new lead capture
+          await fetch(`${SUPABASE_URL}/rest/v1/leads`, {
+            method: 'POST',
+            headers: {
+              'apikey': SUPABASE_ANON,
+              'Authorization': `Bearer ${SUPABASE_ANON}`,
+              'Content-Type': 'application/json',
+              'Prefer': 'return=minimal'
+            },
+            body: JSON.stringify({
+              phone: searchPhone,
+              street_address: selectedAddress,
+              source: 'quote_page',
+              quote_page_visited: true,
+              quote_page_visited_at: new Date().toISOString()
+            })
+          });
+        }
+
+        // Show success
+        document.getElementById('step-phone').classList.remove('visible');
+        document.getElementById('step-phone').style.display = 'none';
+        document.getElementById('step-success').classList.add('visible');
+        document.getElementById('success-address').textContent = selectedAddress;
+
+      } catch(err) {
+        console.error('Error saving lead:', err);
+        // Still show success — don't block UX for a backend hiccup
+        document.getElementById('step-phone').classList.remove('visible');
+        document.getElementById('step-phone').style.display = 'none';
+        document.getElementById('step-success').classList.add('visible');
+        document.getElementById('success-address').textContent = selectedAddress;
+      }
+
+      return false;
+    }
+  </script>
+</body>
+</html>
