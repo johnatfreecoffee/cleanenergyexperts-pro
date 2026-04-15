@@ -101,8 +101,8 @@ export async function onRequestPost(context) {
     const inserted = await supaRes.json();
     const leadId = inserted?.[0]?.id || inserted?.id || null;
 
-    // Send confirmation email with ICS if email provided and Resend configured
-    if (email?.trim() && RESEND_API_KEY) {
+    // ALWAYS send notification to John; also send confirmation to lead if they gave email
+    if (RESEND_API_KEY) {
       try {
         // Parse appointment date/time for ICS
         const [year, month, day] = appointmentDate.split('-').map(Number);
@@ -165,6 +165,25 @@ export async function onRequestPost(context) {
           </div>
         `;
 
+        // 1. Always send notification email to John
+        const notificationHtml = `
+          <div style="font-family: Arial, sans-serif; max-width: 560px; margin: 0 auto;">
+            <div style="background: #FF6B00; padding: 16px 20px; border-radius: 8px 8px 0 0;">
+              <h2 style="color: #fff; margin: 0; font-size: 18px;">🔔 New Lead — ${importedLeadSource}</h2>
+            </div>
+            <div style="background: #fff; padding: 20px; border: 1px solid #ddd;">
+              <p style="font-size: 14px; margin: 0 0 6px;"><strong>Name:</strong> ${firstName.trim()} ${lastName.trim()}</p>
+              <p style="font-size: 14px; margin: 0 0 6px;"><strong>Phone:</strong> ${cleanPhone}</p>
+              <p style="font-size: 14px; margin: 0 0 6px;"><strong>Email:</strong> ${email?.trim() || 'Not provided'}</p>
+              <p style="font-size: 14px; margin: 0 0 6px;"><strong>Address:</strong> ${streetAddress.trim()}, ${city.trim()}, ${state.trim()} ${zip.trim()}</p>
+              <hr style="border: none; border-top: 1px solid #eee; margin: 12px 0;">
+              <p style="font-size: 14px; margin: 0 0 6px;"><strong>Appointment:</strong> ${niceDate} at ${niceTime}</p>
+              <p style="font-size: 14px; margin: 0 0 6px;"><strong>Source:</strong> ${importedLeadSource}</p>
+              <p style="font-size: 13px; color: #888; margin: 12px 0 0;">fbclid: ${fbclid || 'none'}</p>
+            </div>
+          </div>
+        `;
+
         await fetch('https://api.resend.com/emails', {
           method: 'POST',
           headers: {
@@ -172,18 +191,35 @@ export async function onRequestPost(context) {
             'Authorization': `Bearer ${RESEND_API_KEY}`,
           },
           body: JSON.stringify({
-            from: 'Clean Energy Experts <no-reply@cleanenergyexperts.pro>',
-            to: [email.trim()],
-            bcc: ['johnfrankromanojr@gmail.com'],
-            subject: `Your Battery Scan Appointment — ${niceDate} at ${niceTime}`,
-            html: emailHtml,
-            attachments: [{
-              filename: 'appointment.ics',
-              content: icsBase64,
-              content_type: 'text/calendar',
-            }],
+            from: 'Clean Energy Experts <no-reply@virtualpowerplant.us>',
+            to: ['johnfrankromanojr@gmail.com'],
+            subject: `🔔 New Lead: ${firstName.trim()} ${lastName.trim()} — ${importedLeadSource}`,
+            html: notificationHtml,
           }),
         });
+
+        // 2. Send confirmation to lead if they provided email
+        if (email?.trim()) {
+          await fetch('https://api.resend.com/emails', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${RESEND_API_KEY}`,
+            },
+            body: JSON.stringify({
+              from: 'Clean Energy Experts <no-reply@virtualpowerplant.us>',
+              to: [email.trim()],
+              bcc: ['johnfrankromanojr@gmail.com'],
+              subject: `Your Battery Scan Appointment — ${niceDate} at ${niceTime}`,
+              html: emailHtml,
+              attachments: [{
+                filename: 'appointment.ics',
+                content: icsBase64,
+                content_type: 'text/calendar',
+              }],
+            }),
+          });
+        }
       } catch (emailErr) {
         console.error('Email send failed:', emailErr.message);
         // Don't fail the whole request if email fails
