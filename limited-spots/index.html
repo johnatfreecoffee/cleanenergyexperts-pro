@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Limited Spots Available — Edison Virtual Power Plant Battery Program</title>
+  <meta name="description" content="Limited battery allocations in your area. Edison is expanding the Virtual Power Plant — schedule your free Tesla Powerwall 3 battery scan before spots fill up.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔋</text></svg>">
+  <meta name="theme-color" content="#FF6B00">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Limited Spots Available — Edison Battery Program">
+  <meta property="og:description" content="Edison is expanding the Virtual Power Plant in your area. Limited battery allocations — schedule your free Tesla Powerwall 3 scan before spots fill up.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://cleanenergyexperts.pro/limited-spots/">
+  <meta property="og:image" content="https://cleanenergyexperts.pro/images/og-image.jpg">
+
+  <!-- Meta Pixel -->
+  <script>
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+    n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+    document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', 'PIXEL_ID_HERE');
+    fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=PIXEL_ID_HERE&ev=PageView&noscript=1"/></noscript>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', -apple-system, sans-serif; background: #f8f8f8; color: #1a1a1a; min-height: 100vh; }
+    .header { background: linear-gradient(135deg, #FF6B00, #FF8C00); padding: 28px 20px 24px; text-align: center; }
+    .header h1 { font-size: 26px; font-weight: 900; color: #fff; margin-bottom: 4px; }
+    .header p { font-size: 14px; color: rgba(255,255,255,0.9); font-weight: 500; }
+    .cta-bar { padding: 16px; text-align: center; }
+    .cta-bar a { display: block; max-width: 400px; margin: 0 auto; padding: 14px 32px; background: linear-gradient(135deg, #1a6b3c, #228B22); color: #fff; font-size: 16px; font-weight: 700; border: none; border-radius: 10px; cursor: pointer; text-decoration: none; box-shadow: 0 4px 12px rgba(34,139,34,0.3); transition: transform 0.15s; }
+    .cta-bar a:hover { transform: scale(1.03); }
+    .container { max-width: 560px; margin: 0 auto; padding: 4px 16px 40px; }
+    .info-card { background: #fff; border-radius: 12px; padding: 20px; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+    .info-card h2 { font-size: 17px; font-weight: 700; margin-bottom: 10px; color: #1a1a1a; }
+    .info-card p { font-size: 14px; line-height: 1.6; color: #444; }
+    .highlight { background: #FFF8F0; border-left: 4px solid #FF6B00; }
+    .highlight strong { color: #FF6B00; }
+    .tesla-card { background: #F0FFF0; border: 2px solid #2E7D32; }
+    .tesla-card h2 { color: #2E7D32; }
+    .tesla-card strong { color: #2E7D32; }
+    #appointment-form { scroll-margin-top: 20px; }
+    .form-card { background: #fff; border-radius: 12px; padding: 24px 20px; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); border: 2px solid #FF6B00; }
+    .form-card h2 { font-size: 20px; font-weight: 800; color: #FF6B00; margin-bottom: 6px; text-align: center; }
+    .form-card .form-sub { font-size: 13px; color: #666; text-align: center; margin-bottom: 18px; }
+    .form-row { display: flex; gap: 12px; margin-bottom: 14px; }
+    .form-group { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+    .form-group label { font-size: 13px; font-weight: 600; color: #333; margin-bottom: 4px; }
+    .form-group label .req { color: #e53e3e; font-weight: 700; }
+    .form-group label .opt { color: #999; font-weight: 400; font-size: 11px; }
+    .form-group input, .form-group select { padding: 12px 14px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px; font-family: 'Inter', sans-serif; transition: border-color 0.2s; -webkit-appearance: none; width: 100%; min-width: 0; }
+    .form-group input:focus, .form-group select:focus { outline: none; border-color: #FF6B00; }
+    .form-group input.invalid { border-color: #e53e3e; }
+    .form-group input.valid, .form-group select.valid { border-color: #2E7D32; }
+    .form-row-address { display: flex; gap: 12px; margin-bottom: 14px; }
+    .form-row-address .fg-city { flex: 2; min-width: 0; }
+    .form-row-address .fg-state { flex: 0 0 72px; }
+    .form-row-address .fg-zip { flex: 0 0 90px; }
+    @media (max-width: 480px) {
+      .form-row-address { flex-wrap: wrap; }
+      .form-row-address .fg-city { flex: 1 1 100%; }
+      .form-row-address .fg-state { flex: 1 1 calc(40% - 6px); }
+      .form-row-address .fg-zip { flex: 1 1 calc(60% - 6px); }
+    }
+    .submit-btn { display: block; width: 100%; padding: 16px; background: #ccc; color: #fff; font-size: 18px; font-weight: 700; border: none; border-radius: 10px; cursor: not-allowed; margin-top: 8px; transition: background 0.3s, transform 0.15s; font-family: 'Inter', sans-serif; }
+    .submit-btn.ready { background: linear-gradient(135deg, #FF6B00, #FF8C00); cursor: pointer; box-shadow: 0 4px 12px rgba(255,107,0,0.3); }
+    .submit-btn.ready:hover { transform: scale(1.02); }
+    .submit-btn.ready:active { transform: scale(0.98); }
+    .date-time-section { margin-bottom: 14px; }
+    .date-time-section label { font-size: 13px; font-weight: 600; color: #333; margin-bottom: 8px; display: block; }
+    .calendar-grid { background: #fafafa; border: 2px solid #ddd; border-radius: 8px; padding: 12px; margin-bottom: 12px; transition: border-color 0.2s; }
+    .calendar-grid.valid { border-color: #2E7D32; }
+    .cal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+    .cal-header button { background: none; border: none; font-size: 20px; cursor: pointer; color: #FF6B00; padding: 4px 8px; border-radius: 6px; }
+    .cal-header button:hover { background: #FFF0E0; }
+    .cal-header button:disabled { color: #ccc; cursor: not-allowed; }
+    .cal-header button:disabled:hover { background: none; }
+    .cal-header .cal-month { font-size: 15px; font-weight: 700; color: #333; }
+    .cal-days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center; }
+    .cal-days .day-label { font-size: 11px; font-weight: 600; color: #999; padding: 4px 0; }
+    .cal-days .day { font-size: 14px; padding: 8px 0; border-radius: 8px; cursor: pointer; border: none; background: none; font-family: 'Inter', sans-serif; color: #333; transition: all 0.15s; }
+    .cal-days .day:hover:not(.disabled):not(.selected) { background: #FFF0E0; color: #FF6B00; }
+    .cal-days .day.disabled { color: #ccc; cursor: not-allowed; }
+    .cal-days .day.selected { background: #FF6B00; color: #fff; font-weight: 700; }
+    .cal-days .day.today { border: 2px solid #FF6B00; }
+    .cal-days .day.empty { cursor: default; }
+    .time-picker-wrap { display: none; }
+    .time-picker-wrap.show { display: block; }
+    .time-picker-wrap label { font-size: 13px; font-weight: 600; color: #333; margin-bottom: 8px; display: block; }
+    .time-slots { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+    @media (max-width: 400px) { .time-slots { grid-template-columns: repeat(3, 1fr); } }
+    .time-slot { padding: 10px 0; text-align: center; border: 2px solid #ddd; border-radius: 8px; background: #fff; cursor: pointer; font-size: 14px; font-weight: 500; font-family: 'Inter', sans-serif; color: #333; transition: all 0.15s; }
+    .time-slot:hover:not(.selected) { border-color: #FF6B00; color: #FF6B00; }
+    .time-slot.selected { border-color: #FF6B00; background: #FF6B00; color: #fff; font-weight: 700; }
+    .confirmation { display: none; }
+    .conf-header { background: linear-gradient(135deg, #2E7D32, #43A047); padding: 32px 20px; text-align: center; }
+    .conf-header .check-icon { width: 72px; height: 72px; margin: 0 auto 16px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 36px; }
+    .conf-header h1 { font-size: 24px; font-weight: 900; color: #fff; margin-bottom: 4px; }
+    .conf-header p { font-size: 14px; color: rgba(255,255,255,0.9); font-weight: 500; }
+    .conf-container { max-width: 560px; margin: 0 auto; padding: 16px 16px 40px; }
+    .conf-card { background: #fff; border-radius: 12px; padding: 20px; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+    .conf-card h2 { font-size: 17px; font-weight: 700; margin-bottom: 12px; color: #1a1a1a; }
+    .appt-detail { display: flex; align-items: flex-start; margin-bottom: 10px; }
+    .appt-detail .appt-icon { font-size: 20px; margin-right: 12px; flex-shrink: 0; margin-top: 1px; }
+    .appt-detail .appt-text { font-size: 14px; color: #333; line-height: 1.5; }
+    .appt-detail .appt-text strong { display: block; font-weight: 700; color: #1a1a1a; }
+    .appt-card-highlight { border: 2px solid #2E7D32; background: #F0FFF0; }
+    .conf-email-note { text-align: center; font-size: 13px; color: #666; margin-top: 8px; }
+    .footer { text-align: center; padding: 20px; font-size: 12px; color: #999; }
+    .spinner { display: inline-block; width: 20px; height: 20px; border: 3px solid rgba(255,255,255,0.3); border-radius: 50%; border-top-color: #fff; animation: spin 0.8s linear infinite; vertical-align: middle; margin-right: 8px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+
+  <!-- MAIN PAGE -->
+  <div id="main-page">
+    <div class="header">
+      <h1>Limited Spots Available</h1>
+      <p>Edison Virtual Power Plant — Your Area Is Being Activated</p>
+    </div>
+
+    <div class="cta-bar">
+      <a href="#appointment-form">📅 Claim Your Spot</a>
+    </div>
+
+    <div class="container" id="main-content">
+
+      <div class="info-card highlight">
+        <h2>Why Act Now</h2>
+        <p>Edison is actively expanding the <strong>Virtual Power Plant program</strong> in your neighborhood. There are a limited number of battery allocations per area — once spots fill up, the program moves on to the next zone. This is your window to qualify.</p>
+      </div>
+
+      <div class="info-card tesla-card">
+        <h2>🔋 Tesla Powerwall 3</h2>
+        <p>Homeowners who qualify receive <strong>Tesla Powerwall 3 batteries at no cost</strong>. Your home gets full battery backup — protection during outages and potential energy bill savings, all covered through the Edison VPP program.</p>
+      </div>
+
+      <div class="info-card">
+        <h2>What Happens Next</h2>
+        <p><strong>1.</strong> We fly a drone to photograph your roof<br>
+        <strong>2.</strong> We inspect your breaker box, meter, and electrical panel<br>
+        <strong>3.</strong> You receive your qualification status update</p>
+      </div>
+
+      <!-- APPOINTMENT FORM -->
+      <div class="form-card" id="appointment-form">
+        <h2>📅 Claim Your Battery Scan Spot</h2>
+        <p class="form-sub">Pick a date and time that works for you.</p>
+
+        <form id="lead-form" novalidate>
+          <input type="hidden" id="fbclid" name="fbclid" value="">
+          <div class="form-row">
+            <div class="form-group">
+              <label>First Name <span class="req">*</span></label>
+              <input type="text" id="firstName" name="firstName" required autocomplete="given-name" placeholder="John">
+            </div>
+            <div class="form-group">
+              <label>Last Name <span class="req">*</span></label>
+              <input type="text" id="lastName" name="lastName" required autocomplete="family-name" placeholder="Smith">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Phone Number <span class="req">*</span></label>
+              <input type="tel" id="phone" name="phone" required inputmode="tel" autocomplete="tel" placeholder="(555) 555-1212">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Email <span class="opt">(optional)</span></label>
+              <input type="email" id="email" name="email" autocomplete="email" placeholder="you@example.com">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Street Address <span class="req">*</span></label>
+              <input type="text" id="streetAddress" name="streetAddress" required autocomplete="street-address" placeholder="123 Main St">
+            </div>
+          </div>
+          <div class="form-row-address">
+            <div class="form-group fg-city">
+              <label>City <span class="req">*</span></label>
+              <input type="text" id="city" name="city" required autocomplete="address-level2" placeholder="Menifee">
+            </div>
+            <div class="form-group fg-state">
+              <label>State <span class="req">*</span></label>
+              <select id="state" name="state" required autocomplete="address-level1">
+                <option value="AL">AL</option><option value="AK">AK</option><option value="AZ">AZ</option><option value="AR">AR</option><option value="CA" selected>CA</option><option value="CO">CO</option><option value="CT">CT</option><option value="DE">DE</option><option value="FL">FL</option><option value="GA">GA</option><option value="HI">HI</option><option value="ID">ID</option><option value="IL">IL</option><option value="IN">IN</option><option value="IA">IA</option><option value="KS">KS</option><option value="KY">KY</option><option value="LA">LA</option><option value="ME">ME</option><option value="MD">MD</option><option value="MA">MA</option><option value="MI">MI</option><option value="MN">MN</option><option value="MS">MS</option><option value="MO">MO</option><option value="MT">MT</option><option value="NE">NE</option><option value="NV">NV</option><option value="NH">NH</option><option value="NJ">NJ</option><option value="NM">NM</option><option value="NY">NY</option><option value="NC">NC</option><option value="ND">ND</option><option value="OH">OH</option><option value="OK">OK</option><option value="OR">OR</option><option value="PA">PA</option><option value="RI">RI</option><option value="SC">SC</option><option value="SD">SD</option><option value="TN">TN</option><option value="TX">TX</option><option value="UT">UT</option><option value="VT">VT</option><option value="VA">VA</option><option value="WA">WA</option><option value="WV">WV</option><option value="WI">WI</option><option value="WY">WY</option><option value="DC">DC</option>
+              </select>
+            </div>
+            <div class="form-group fg-zip">
+              <label>Zip <span class="req">*</span></label>
+              <input type="text" id="zip" name="zip" required inputmode="numeric" autocomplete="postal-code" placeholder="92584" maxlength="5" pattern="[0-9]{5}">
+            </div>
+          </div>
+
+          <!-- DATE PICKER -->
+          <div class="date-time-section">
+            <label>Preferred Date <span class="req">*</span></label>
+            <div class="calendar-grid" id="calendarGrid">
+              <div class="cal-header">
+                <button type="button" id="calPrev" aria-label="Previous month">‹</button>
+                <span class="cal-month" id="calMonth"></span>
+                <button type="button" id="calNext" aria-label="Next month">›</button>
+              </div>
+              <div class="cal-days" id="calDays"></div>
+            </div>
+            <div class="time-picker-wrap" id="timePickerWrap">
+              <label>Preferred Time <span class="req">*</span></label>
+              <div class="time-slots" id="timeSlots"></div>
+            </div>
+          </div>
+
+          <input type="hidden" id="selectedDate" name="selectedDate">
+          <input type="hidden" id="selectedTime" name="selectedTime">
+
+          <button type="submit" class="submit-btn" id="submitBtn" disabled>Reserve My Spot</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p>Clean Energy Experts — Edison Virtual Power Plant Battery Program</p>
+    </div>
+  </div>
+
+  <!-- CONFIRMATION PAGE -->
+  <div class="confirmation" id="confirmation-page">
+    <div class="conf-header">
+      <div class="check-icon">✅</div>
+      <h1>Your Spot Is Reserved</h1>
+      <p>Your battery scan appointment is confirmed</p>
+    </div>
+    <div class="conf-container">
+      <div class="conf-card appt-card-highlight">
+        <h2>📅 Your Appointment</h2>
+        <div class="appt-detail"><span class="appt-icon">📆</span><div class="appt-text"><strong>Date</strong><span id="conf-date"></span></div></div>
+        <div class="appt-detail"><span class="appt-icon">🕐</span><div class="appt-text"><strong>Time</strong><span id="conf-time"></span></div></div>
+        <div class="appt-detail"><span class="appt-icon">📍</span><div class="appt-text"><strong>Location</strong><span id="conf-address"></span></div></div>
+      </div>
+      <div class="conf-card">
+        <h2>Your Details</h2>
+        <div class="appt-detail"><span class="appt-icon">👤</span><div class="appt-text"><span id="conf-name"></span></div></div>
+        <div class="appt-detail"><span class="appt-icon">📱</span><div class="appt-text"><span id="conf-phone"></span></div></div>
+        <div class="appt-detail" id="conf-email-row" style="display:none;"><span class="appt-icon">✉️</span><div class="appt-text"><span id="conf-email-val"></span></div></div>
+        <p class="conf-email-note" id="conf-email-msg"></p>
+      </div>
+      <div class="conf-card">
+        <h2>What Happens Next</h2>
+        <p style="font-size:14px; color:#444; line-height:1.6;">A team member will reach out to confirm your appointment. On the day of your scan, we'll fly a drone over your roof and inspect your electrical panel to determine qualification for the Edison Virtual Power Plant program.</p>
+      </div>
+      <div class="footer"><p>Clean Energy Experts — Edison Virtual Power Plant Battery Program</p></div>
+    </div>
+  </div>
+
+  <script>
+    // Capture fbclid from URL
+    (function() {
+      var params = new URLSearchParams(window.location.search);
+      var fbclid = params.get('fbclid');
+      if (fbclid) document.getElementById('fbclid').value = fbclid;
+    })();
+
+    // CALENDAR
+    var today = new Date(); today.setHours(0,0,0,0);
+    var currentMonth = today.getMonth(), currentYear = today.getFullYear();
+    var selectedDate = null, selectedTime = null;
+    var monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+    function renderCalendar() {
+      var calMonth = document.getElementById('calMonth');
+      var calDays = document.getElementById('calDays');
+      var calPrev = document.getElementById('calPrev');
+      calMonth.textContent = monthNames[currentMonth] + ' ' + currentYear;
+      calPrev.disabled = (currentYear === today.getFullYear() && currentMonth === today.getMonth());
+      var html = '';
+      ['Su','Mo','Tu','We','Th','Fr','Sa'].forEach(function(d) { html += '<span class="day-label">' + d + '</span>'; });
+      var firstDay = new Date(currentYear, currentMonth, 1).getDay();
+      var daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+      for (var i = 0; i < firstDay; i++) html += '<button type="button" class="day empty" disabled>&nbsp;</button>';
+      for (var d = 1; d <= daysInMonth; d++) {
+        var date = new Date(currentYear, currentMonth, d); date.setHours(0,0,0,0);
+        var isPast = date <= today;
+        var isSelected = selectedDate && date.getTime() === selectedDate.getTime();
+        var isToday = date.getTime() === today.getTime();
+        var cls = 'day';
+        if (isPast) cls += ' disabled';
+        if (isSelected) cls += ' selected';
+        if (isToday) cls += ' today';
+        html += '<button type="button" class="' + cls + '" ' + (isPast ? 'disabled' : '') + ' data-date="' + date.toISOString().split('T')[0] + '">' + d + '</button>';
+      }
+      calDays.innerHTML = html;
+      calDays.querySelectorAll('.day:not(.disabled):not(.empty)').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          var dateStr = this.dataset.date; var parts = dateStr.split('-');
+          selectedDate = new Date(parseInt(parts[0]), parseInt(parts[1])-1, parseInt(parts[2]));
+          selectedDate.setHours(0,0,0,0);
+          document.getElementById('selectedDate').value = dateStr;
+          document.getElementById('calendarGrid').classList.add('valid');
+          renderCalendar(); showTimePicker(); validate();
+        });
+      });
+    }
+    document.getElementById('calPrev').addEventListener('click', function() { currentMonth--; if (currentMonth < 0) { currentMonth = 11; currentYear--; } renderCalendar(); });
+    document.getElementById('calNext').addEventListener('click', function() { currentMonth++; if (currentMonth > 11) { currentMonth = 0; currentYear++; } renderCalendar(); });
+
+    function showTimePicker() {
+      var wrap = document.getElementById('timePickerWrap');
+      var container = document.getElementById('timeSlots');
+      wrap.classList.add('show');
+      var html = '';
+      for (var h = 9; h <= 20; h++) {
+        var hour12 = h > 12 ? h - 12 : h;
+        var ampm = h >= 12 ? 'PM' : 'AM';
+        var label = hour12 + ':00 ' + ampm;
+        var val = (h < 10 ? '0' : '') + h + ':00';
+        var isSelected = selectedTime === val;
+        html += '<button type="button" class="time-slot' + (isSelected ? ' selected' : '') + '" data-time="' + val + '">' + label + '</button>';
+      }
+      container.innerHTML = html;
+      container.querySelectorAll('.time-slot').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          selectedTime = this.dataset.time;
+          document.getElementById('selectedTime').value = selectedTime;
+          container.querySelectorAll('.time-slot').forEach(function(b) { b.classList.remove('selected'); });
+          this.classList.add('selected');
+          validate();
+        });
+      });
+    }
+
+    // VALIDATION
+    var form = document.getElementById('lead-form');
+    var btn = document.getElementById('submitBtn');
+    var fields = {
+      firstName: { el: document.getElementById('firstName'), required: true },
+      lastName: { el: document.getElementById('lastName'), required: true },
+      phone: { el: document.getElementById('phone'), required: true },
+      email: { el: document.getElementById('email'), required: false },
+      streetAddress: { el: document.getElementById('streetAddress'), required: true },
+      city: { el: document.getElementById('city'), required: true },
+      state: { el: document.getElementById('state'), required: true },
+      zip: { el: document.getElementById('zip'), required: true },
+    };
+
+    fields.phone.el.addEventListener('input', function() {
+      var val = this.value.replace(/\D/g, '');
+      if (val.length > 10) val = val.slice(0, 10);
+      if (val.length >= 7) this.value = '(' + val.slice(0,3) + ') ' + val.slice(3,6) + '-' + val.slice(6);
+      else if (val.length >= 4) this.value = '(' + val.slice(0,3) + ') ' + val.slice(3);
+      else if (val.length > 0) this.value = '(' + val;
+      validate();
+    });
+    fields.zip.el.addEventListener('input', function() { this.value = this.value.replace(/\D/g, '').slice(0, 5); validate(); });
+    Object.values(fields).forEach(function(f) { f.el.addEventListener('input', validate); f.el.addEventListener('change', validate); });
+
+    function validate() {
+      var allValid = true;
+      ['firstName', 'lastName', 'streetAddress', 'city'].forEach(function(name) {
+        var f = fields[name]; var val = f.el.value.trim();
+        if (!val) { allValid = false; f.el.classList.remove('valid'); if (f.el.dataset.touched) f.el.classList.add('invalid'); }
+        else { f.el.classList.remove('invalid'); f.el.classList.add('valid'); }
+      });
+      var phoneDigits = fields.phone.el.value.replace(/\D/g, '');
+      if (phoneDigits.length !== 10) { allValid = false; fields.phone.el.classList.remove('valid'); if (fields.phone.el.dataset.touched) fields.phone.el.classList.add('invalid'); }
+      else { fields.phone.el.classList.remove('invalid'); fields.phone.el.classList.add('valid'); }
+      var emailVal = fields.email.el.value.trim();
+      if (emailVal && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal)) { allValid = false; fields.email.el.classList.remove('valid'); fields.email.el.classList.add('invalid'); }
+      else { fields.email.el.classList.remove('invalid'); if (emailVal) fields.email.el.classList.add('valid'); }
+      var zipVal = fields.zip.el.value;
+      if (!/^\d{5}$/.test(zipVal)) { allValid = false; fields.zip.el.classList.remove('valid'); if (fields.zip.el.dataset.touched) fields.zip.el.classList.add('invalid'); }
+      else { fields.zip.el.classList.remove('invalid'); fields.zip.el.classList.add('valid'); }
+      if (!document.getElementById('selectedDate').value) allValid = false;
+      if (!document.getElementById('selectedTime').value) allValid = false;
+      if (allValid) { btn.disabled = false; btn.classList.add('ready'); }
+      else { btn.disabled = true; btn.classList.remove('ready'); }
+      return allValid;
+    }
+    Object.values(fields).forEach(function(f) { f.el.addEventListener('blur', function() { this.dataset.touched = '1'; validate(); }); });
+
+    // SUBMIT
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      Object.values(fields).forEach(function(f) { f.el.dataset.touched = '1'; });
+      if (!validate()) return;
+      btn.disabled = true;
+      btn.innerHTML = '<span class="spinner"></span> Reserving...';
+      var phoneDigits = fields.phone.el.value.replace(/\D/g, '');
+      var payload = {
+        firstName: fields.firstName.el.value.trim(),
+        lastName: fields.lastName.el.value.trim(),
+        phone: '+1' + phoneDigits,
+        email: fields.email.el.value.trim() || null,
+        streetAddress: fields.streetAddress.el.value.trim(),
+        city: fields.city.el.value.trim(),
+        state: fields.state.el.value,
+        zip: fields.zip.el.value,
+        appointmentDate: document.getElementById('selectedDate').value,
+        appointmentTime: document.getElementById('selectedTime').value,
+        source: 'limited-spots',
+        sourceUrl: window.location.href,
+        fbclid: document.getElementById('fbclid').value || null,
+      };
+      try {
+        var res = await fetch('/api/book-appointment', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+        var data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Submission failed');
+        // Fire Meta Pixel Lead event
+        if (typeof fbq === 'function') fbq('track', 'Lead');
+        // Show confirmation
+        document.getElementById('main-page').style.display = 'none';
+        document.getElementById('confirmation-page').style.display = 'block';
+        window.scrollTo(0, 0);
+        var dateParts = payload.appointmentDate.split('-');
+        var apptDate = new Date(parseInt(dateParts[0]), parseInt(dateParts[1])-1, parseInt(dateParts[2]));
+        document.getElementById('conf-date').textContent = apptDate.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+        var timeParts = payload.appointmentTime.split(':');
+        var hour = parseInt(timeParts[0]); var hour12 = hour > 12 ? hour - 12 : hour; var ampm = hour >= 12 ? 'PM' : 'AM';
+        document.getElementById('conf-time').textContent = hour12 + ':00 ' + ampm;
+        document.getElementById('conf-address').textContent = payload.streetAddress + ', ' + payload.city + ', ' + payload.state + ' ' + payload.zip;
+        document.getElementById('conf-name').textContent = payload.firstName + ' ' + payload.lastName;
+        document.getElementById('conf-phone').textContent = '(' + phoneDigits.slice(0,3) + ') ' + phoneDigits.slice(3,6) + '-' + phoneDigits.slice(6);
+        if (payload.email) {
+          document.getElementById('conf-email-row').style.display = 'flex';
+          document.getElementById('conf-email-val').textContent = payload.email;
+          document.getElementById('conf-email-msg').textContent = 'A confirmation email with calendar invite has been sent to ' + payload.email + '.';
+        }
+      } catch (err) {
+        btn.disabled = false; btn.classList.add('ready'); btn.textContent = 'Reserve My Spot';
+        alert('Something went wrong: ' + err.message + '. Please try again.');
+      }
+    });
+
+    renderCalendar(); validate();
+  </script>
+</body>
+</html>
