@@ -178,7 +178,7 @@ export async function onRequestPost(context) {
       'BEGIN:VEVENT',
       `DTSTART;TZID=America/Los_Angeles:${formatICS(startDt)}`,
       `DTEND;TZID=America/Los_Angeles:${formatICS(endDt)}`,
-      `SUMMARY:Battery Scan — ${firstName.trim()} ${lastName.trim()}`,
+      `SUMMARY:Battery Scan - ${firstName.trim()} ${lastName.trim()}`,
       `DESCRIPTION:Battery scan appointment for ${firstName.trim()} ${lastName.trim()}\\n${locationStr}\\nPhone: ${cleanPhone}${email?.trim() ? '\\nEmail: ' + email.trim() : ''}\\nSource: ${importedLeadSource}`,
       `LOCATION:${locationStr.replace(/,/g, '\\,')}`,
       'STATUS:CONFIRMED',
@@ -188,7 +188,13 @@ export async function onRequestPost(context) {
       'END:VCALENDAR',
     ].join('\r\n');
 
-    const icsBase64 = btoa(icsContent);
+    // CF Workers btoa() only supports Latin1 — encode bytes to base64 safely
+    const icsBytes = new TextEncoder().encode(icsContent);
+    let binaryStr = '';
+    for (let i = 0; i < icsBytes.length; i++) {
+      binaryStr += String.fromCharCode(icsBytes[i]);
+    }
+    const icsBase64 = btoa(binaryStr);
 
     // ──────────────────────────────────
     // 4. EMAIL: Notification to JOHN (always sent)
