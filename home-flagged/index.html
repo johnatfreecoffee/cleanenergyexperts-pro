@@ -118,6 +118,14 @@
     .footer { text-align: center; padding: 20px; font-size: 12px; color: #999; }
     .spinner { display: inline-block; width: 20px; height: 20px; border: 3px solid rgba(255,255,255,0.3); border-radius: 50%; border-top-color: #fff; animation: spin 0.8s linear infinite; vertical-align: middle; margin-right: 8px; }
     @keyframes spin { to { transform: rotate(360deg); } }
+
+    .steps-list { list-style: none; padding: 0; margin: 0; }
+    .step-item { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 16px; }
+    .step-item:last-child { margin-bottom: 0; }
+    .step-icon { flex-shrink: 0; width: 48px; height: 48px; background: #FFF8F0; border-radius: 12px; display: flex; align-items: center; justify-content: center; }
+    .step-text { flex: 1; }
+    .step-text strong { display: block; font-size: 15px; font-weight: 700; color: #1a1a1a; margin-bottom: 2px; }
+    .step-text p { font-size: 13px; line-height: 1.5; color: #555; margin: 0; }
   </style>
 </head>
 <body>
@@ -136,8 +144,8 @@
     <div class="container" id="main-content">
 
       <div class="info-card highlight">
-        <h2>Why We're Reaching Out</h2>
-        <p>Your home has been identified as a potential location for <strong>Edison's Virtual Power Plant expansion</strong>. We need to complete a battery load assessment at your address to determine if your home qualifies for the program.</p>
+        <h2>Your Home Has Been Flagged</h2>
+        <p>Your address has been identified for <strong>Edison's Virtual Power Plant expansion</strong>. The next step is a free battery scan to determine if your home qualifies for Tesla Powerwall 3 batteries at no cost. Schedule your scan below to get started.</p>
       </div>
 
       <div class="info-card tesla-card">
@@ -146,16 +154,36 @@
       </div>
 
       <div class="info-card">
-        <h2>What Happens Next</h2>
-        <p><strong>1.</strong> We fly a drone to photograph your roof<br>
-        <strong>2.</strong> We inspect your breaker box, meter, and electrical panel<br>
-        <strong>3.</strong> You receive your qualification status update</p>
+        <h2>What Happens When You Schedule</h2>
+        <ul class="steps-list">
+          <li class="step-item">
+            <div class="step-icon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#FF6B00" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2"/><path d="M5 5L8.5 8.5"/><path d="M19 5l-3.5 3.5"/><path d="M5 19l3.5-3.5"/><path d="M19 19l-3.5-3.5"/><circle cx="5" cy="5" r="2"/><circle cx="19" cy="5" r="2"/><circle cx="5" cy="19" r="2"/><circle cx="19" cy="19" r="2"/></svg></div>
+            <div class="step-text">
+              <strong>Aerial Roof Survey</strong>
+              <p>We fly a drone over your property to photograph your roof layout, sun exposure, and panel placement areas.</p>
+            </div>
+          </li>
+          <li class="step-item">
+            <div class="step-icon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#FF6B00" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="8" y2="6.01"/><line x1="16" y1="6" x2="16" y2="6.01"/><line x1="8" y1="10" x2="8" y2="10.01"/><line x1="16" y1="10" x2="16" y2="10.01"/><line x1="8" y1="14" x2="8" y2="14.01"/><line x1="16" y1="14" x2="16" y2="14.01"/><path d="M12 18v-4"/><circle cx="12" cy="18" r="1"/></svg></div>
+            <div class="step-text">
+              <strong>Electrical Inspection</strong>
+              <p>A technician inspects your breaker box, electrical panel, and meter to assess your home's battery compatibility.</p>
+            </div>
+          </li>
+          <li class="step-item">
+            <div class="step-icon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#FF6B00" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="2"/><path d="M9 14l2 2 4-4"/></svg></div>
+            <div class="step-text">
+              <strong>Your Qualification Update</strong>
+              <p>Once the scan is complete, we'll let you know if your home qualifies for the Edison Virtual Power Plant program and walk you through next steps.</p>
+            </div>
+          </li>
+        </ul>
       </div>
 
       <!-- APPOINTMENT FORM -->
       <div class="form-card" id="appointment-form">
-        <h2>📅 Let's See If Your Home Qualifies</h2>
-        <p class="form-sub">Book your free battery scan — we'll come to your home and check eligibility.</p>
+        <h2>📅 Schedule Your Free Battery Scan</h2>
+        <p class="form-sub">Pick a date and time — we'll come to your home and check eligibility.</p>
 
         <form id="lead-form" novalidate>
           <input type="hidden" id="fbclid" name="fbclid" value="">
