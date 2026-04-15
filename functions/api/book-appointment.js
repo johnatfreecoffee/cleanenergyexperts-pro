@@ -38,12 +38,13 @@ export async function onRequestPost(context) {
     else if (cleanPhone.length === 11 && cleanPhone.startsWith('1')) cleanPhone = '+' + cleanPhone;
 
     // Determine imported_lead_source from source field
+    // Source comes in as full label like "Meta Ad - Home Flagged" or legacy short names
     const sourceMap = {
       'limited-spots': 'Meta Ad - Limited Spots',
       'no-cost-powerwall': 'Meta Ad - No Cost Powerwall',
       'your-neighbors': 'Meta Ad - Your Neighbors',
     };
-    const importedLeadSource = sourceMap[source] || `Meta Ad - ${source || 'Unknown'}`;
+    const importedLeadSource = sourceMap[source] || source || 'Meta Ad - Unknown';
 
     // Build notes
     const noteParts = [`Appointment: ${appointmentDate} at ${appointmentTime}`];
