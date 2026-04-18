@@ -2,11 +2,92 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta http-equiv="refresh" content="0;url=/bill-scan/">
-<title>Redirecting…</title>
-<script>window.location.replace('/bill-scan/');</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Analyze Your Bill — Clean Energy Experts</title>
+<meta name="description" content="Upload your utility bill to see exactly how much you could save with battery storage.">
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+    color: #fff;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+  .card {
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 24px;
+    padding: 40px 32px;
+    max-width: 480px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  }
+  .check {
+    width: 72px;
+    height: 72px;
+    background: #10b981;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 24px;
+    font-size: 36px;
+  }
+  h1 {
+    font-size: 1.6rem;
+    font-weight: 800;
+    margin-bottom: 12px;
+    line-height: 1.25;
+  }
+  p {
+    color: rgba(255,255,255,0.85);
+    font-size: 1rem;
+    line-height: 1.55;
+    margin-bottom: 28px;
+  }
+  .cta {
+    display: inline-block;
+    background: #10b981;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1.1rem;
+    padding: 16px 36px;
+    border-radius: 12px;
+    transition: transform 0.15s ease, background 0.15s ease;
+    box-shadow: 0 8px 20px rgba(16,185,129,0.4);
+  }
+  .cta:hover { background: #059669; transform: translateY(-1px); }
+  .small {
+    margin-top: 18px;
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.6);
+  }
+</style>
 </head>
 <body>
-<p>Redirecting to <a href="/bill-scan/">Energy Analysis</a>…</p>
+  <div class="card">
+    <div class="check">✓</div>
+    <h1>You're All Set!</h1>
+    <p>Tap below to upload your utility bill and see exactly how much you could save with battery storage.</p>
+    <a href="/bill-scan/" class="cta" id="cta">Analyze My Bill →</a>
+    <div class="small">Opening in a moment…</div>
+  </div>
+  <script>
+    // Auto-forward AFTER user has had a moment to see the page.
+    // Facebook's in-app browser kills 0-second redirects, so we wait 2.5s and use a click-equivalent navigation.
+    setTimeout(function() {
+      var qs = window.location.search || '';
+      window.location.href = '/bill-scan/' + qs;
+    }, 2500);
+  </script>
 </body>
 </html>
