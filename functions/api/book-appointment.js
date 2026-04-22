@@ -38,11 +38,12 @@ export async function onRequestPost(context) {
       });
     }
 
-    // Phone: normalize to +1XXXXXXXXXX, reject bad lengths
+    // Phone: normalize to +1XXXXXXXXXX, reject invalid numbers
     let digitsOnly = String(phone).replace(/\D/g, '');
     // Strip leading country code '1' if present to get the 10-digit local number
     if (digitsOnly.length === 11 && digitsOnly.startsWith('1')) digitsOnly = digitsOnly.slice(1);
-    if (digitsOnly.length !== 10) {
+    // Must be exactly 10 digits, and US NPA/area code cannot start with 0 or 1
+    if (digitsOnly.length !== 10 || /^[01]/.test(digitsOnly)) {
       return new Response(JSON.stringify({ error: 'Invalid phone number. Must be a 10-digit US number.' }), {
         status: 400, headers: corsHeaders,
       });
